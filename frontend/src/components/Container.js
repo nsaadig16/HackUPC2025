@@ -81,6 +81,8 @@ const Container = () => {
             <div className="container2 text-left h-full flex flex-col bg-white rounded-lg overflow-hidden shadow-lg">
               {spaceActive === 1 ? (
                 <>
+
+                
                   <div className="flex flex-row w-full basis-[60%] relative min-h-[300px]">
                     {/* Imagen de fondo con blur - SOLO en esta sección */}
                     <div className="absolute inset-0 z-0 overflow-hidden">
