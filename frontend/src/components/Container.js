@@ -1,6 +1,7 @@
 import { React, use, useEffect, useState } from 'react'
 import Button from './Button'
 import Form from './Form'
+import GroupPanel from './GroupPanel';
 
 
 const Container = () => {
@@ -20,6 +21,13 @@ const Container = () => {
         { name: "Gastronomía", day: "Sábado", hour: "20:00" },
         { name: "Arte", day: "Domingo", hour: "22:00" },
     ])
+    const [usersInfoList, setUsersInfoList] = useState([
+        { Nom: 'Marc Calvo', Destins: 'Barcelona', Interessos: 'Esports' },
+        { Nom: 'Laura Pérez', Destins: 'Sitges', Interessos: 'Platja' },
+        { Nom: 'Carlos López', Destins: 'Girona', Interessos: 'Història' },
+        { Nom: 'Ana Ruiz', Destins: 'Tarragona', Interessos: 'Romà' },
+        { Nom: 'Javier Gómez', Destins: 'Lleida', Interessos: 'Muntanya' },
+    ]);
     const [titleSlider, setTitleSlider] = useState("")
     const [textSlider, setTextSlider] = useState("")
     const [actualUsers, setActualUsers] = useState(0)
@@ -67,87 +75,94 @@ const Container = () => {
 
 
                         <div className="container2 text-left h-full flex flex-col bg-white rounded-lg overflow-hidden shadow-lg">
-                            {titleSlider ? (
-                                <>
-                                    <div className='flex flex-row w-full basis-[60%] relative min-h-[300px]'>
-                                        {/* Imagen de fondo con blur - SOLO en esta sección */}
-                                        <div className="absolute inset-0 z-0 overflow-hidden">
-                                            <img
-                                                src={imageResults}
-                                                alt="background"
-                                                className="w-full h-full object-cover filter blur-md"
-                                            />
-                                        </div>
-
-                                        {/* Contenido sobre la imagen de fondo */}
-                                        <div className="relative z-10 flex flex-row w-full p-8 items-center">
-                                            {/* Cuadrado con imagen nítida */}
-                                            <div className="bg-white p-2 rounded-lg ml-5 shadow-md mr-6 flex-shrink-0">
+                            {spaceActive === 1 ? (<>
+                                {titleSlider ? (
+                                    <>
+                                        <div className='flex flex-row w-full basis-[60%] relative min-h-[300px]'>
+                                            {/* Imagen de fondo con blur - SOLO en esta sección */}
+                                            <div className="absolute inset-0 z-0 overflow-hidden">
                                                 <img
                                                     src={imageResults}
-                                                    alt="imagen principal"
-                                                    className=" w-72 h-72 object-cover rounded-md"
+                                                    alt="background"
+                                                    className="w-full h-full object-cover filter blur-md"
                                                 />
                                             </div>
 
-                                            {/* Texto grande al lado derecho */}
-                                            <div className="text-white drop-shadow-md">
-                                                <h1 className="text-4xl font-bold mb-2">{titleSlider}</h1>
-                                                <p className="text-xl">{textSlider}</p>
+                                            {/* Contenido sobre la imagen de fondo */}
+                                            <div className="relative z-10 flex flex-row w-full p-8 items-center">
+                                                {/* Cuadrado con imagen nítida */}
+                                                <div className="bg-white p-2 rounded-lg ml-5 shadow-md mr-6 flex-shrink-0">
+                                                    <img
+                                                        src={imageResults}
+                                                        alt="imagen principal"
+                                                        className=" w-72 h-72 object-cover rounded-md"
+                                                    />
+                                                </div>
+
+                                                {/* Texto grande al lado derecho */}
+                                                <div className="text-white drop-shadow-md">
+                                                    <h1 className="text-4xl font-bold mb-2">{titleSlider}</h1>
+                                                    <p className="text-xl">{textSlider}</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    {/* Sección inferior SIN blur (40% de altura) */}
-                                    <div className="flex flex-col w-full basis-[40%] bg-white p-6">
-                                        {/* Lista de información */}
-                                        <div className="w-full mb-6">
-                                            <ul className="grid grid-cols-2 gap-4">
-                                                <li className="flex items-center">
-                                                    <span className="font-semibold mr-2">Price:</span>
-                                                    <span>Valor 1</span>
-                                                </li>
-                                                <li className="flex items-center">
-                                                    <span className="font-semibold mr-2">Date:</span>
-                                                    <span>Valor 2</span>
-                                                </li>
-                                                <li className="flex items-center">
-                                                    <span className="font-semibold mr-2">Ubication:</span>
-                                                    <span>Valor 3</span>
-                                                </li>
-                                                <li className="flex items-center">
-                                                    <span className="font-semibold mr-2">Hour:</span>
-                                                    <span>Valor 4</span>
-                                                </li>
-                                            </ul>
+                                        {/* Sección inferior SIN blur (40% de altura) */}
+                                        <div className="flex flex-col w-full basis-[40%] bg-white p-6">
+                                            {/* Lista de información */}
+                                            <div className="w-full mb-6">
+                                                <ul className="grid grid-cols-2 gap-4">
+                                                    <li className="flex items-center">
+                                                        <span className="font-semibold mr-2">Price:</span>
+                                                        <span>Valor 1</span>
+                                                    </li>
+                                                    <li className="flex items-center">
+                                                        <span className="font-semibold mr-2">Date:</span>
+                                                        <span>Valor 2</span>
+                                                    </li>
+                                                    <li className="flex items-center">
+                                                        <span className="font-semibold mr-2">Ubication:</span>
+                                                        <span>Valor 3</span>
+                                                    </li>
+                                                    <li className="flex items-center">
+                                                        <span className="font-semibold mr-2">Hour:</span>
+                                                        <span>Valor 4</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            {/* Botones en el centro inferior - Versión con iconos más claros */}
+                                            <div className="flex justify-center items-center space-x-6 w-full mt-auto">
+                                                <button className="bg-green-50 hover:bg-green-100 text-green-600 font-bold py-3 px-8 rounded-full flex items-center transition-colors border border-green-100">
+                                                    <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                    Aceptar
+                                                </button>
+
+                                                <button className="bg-red-50 hover:bg-red-100 text-red-600 font-bold py-3 px-8 rounded-full flex items-center transition-colors border border-red-100">
+                                                    <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                    Rechazar
+                                                </button>
+                                            </div>
                                         </div>
+                                    </>) :
+                                    <>
+                                        <div className="flex flex-col mt-48 items-center h-full w-full">
+                                            <h1 className="text-4xl font-bold mb-2">Cargando resultados {actualUsers}/{totalUsers}</h1>
+                                            <button onClick={() => { getResults(); }} className="w-auto h-8 bg-blue-400 rounded-full px-2 hover:bg-blue-200" >Get answers</button>
+                                            <p className="text-sm mt-3 text-red-500">If you press button anyone could enter to the group</p>
 
-                                        {/* Botones en el centro inferior - Versión con iconos más claros */}
-                                        <div className="flex justify-center items-center space-x-6 w-full mt-auto">
-                                            <button className="bg-green-50 hover:bg-green-100 text-green-600 font-bold py-3 px-8 rounded-full flex items-center transition-colors border border-green-100">
-                                                <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                                </svg>
-                                                Aceptar
-                                            </button>
-
-                                            <button className="bg-red-50 hover:bg-red-100 text-red-600 font-bold py-3 px-8 rounded-full flex items-center transition-colors border border-red-100">
-                                                <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                                </svg>
-                                                Rechazar
-                                            </button>
                                         </div>
-                                    </div>
-                                </>) :
-                                <>
-                                    <div className="flex flex-col mt-48 items-center h-full w-full">
-                                        <h1 className="text-4xl font-bold mb-2">Cargando resultados {actualUsers}/{totalUsers}</h1>
-                                        <button onClick={() => { getResults(); }} className="w-auto h-8 bg-blue-400 rounded-full px-2 hover:bg-blue-200" >Get answers</button>
-                                        <p className="text-sm mt-3 text-red-500">If you press button anyone could enter to the group</p>
+                                    </>}
+                            </>) : (<>
+                                <GroupPanel grupos={usersInfoList} />
 
-                                    </div>
-                                </>}
+
+                            </>)}
+
                         </div>
 
 
