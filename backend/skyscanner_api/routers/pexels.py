@@ -19,7 +19,7 @@ def get_specific_image(subject: str = "Paris") -> Optional[dict]:
         "Authorization": PEXELS_API_KEY
     }
     
-    url = f"https://api.pexels.com/v1/search?query={subject}&per_page=1"
+    url = f"https://api.pexels.com/v1/search?query={subject}&orientation=landscape&per_page=1"
     
     try:
         response = requests.get(url, headers=headers)
