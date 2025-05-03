@@ -5,6 +5,7 @@ const Form = () => {
     const [origin, setOrigin] = useState('');
     const [destinations, setDestinations] = useState([]);
     const [destinationInput, setDestinationInput] = useState('');
+    const [interestsInput, setInterestsInput] = useState('');
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
     const [interests, setInterests] = useState([]);
@@ -26,6 +27,20 @@ const Form = () => {
     // Eliminar destino
     const removeDestination = (index) => {
         setDestinations(destinations.filter((_, i) => i !== index));
+    };
+
+    // Añadir interes
+    const addInterests = (e) => {
+        e.preventDefault();
+        if (interestsInput.trim() && !interests.includes(interestsInput)) {
+            setInterests([...interests, interestsInput]);
+            setInterestsInput('');
+        }
+    };
+
+    // Eliminar interés
+    const removeInterests = (index) => {
+        setInterests(interests.filter((_, i) => i !== index));
     };
 
     // Añadir miembro
@@ -130,25 +145,35 @@ const Form = () => {
 
             {/* Intereses */}
             <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Intereses</label>
-                <div className="grid grid-cols-2 gap-2">
-                    {interestOptions.map((interest) => (
-                        <label key={interest} className="flex items-center">
-                            <input
-                                type="checkbox"
-                                checked={interests.includes(interest)}
-                                onChange={(e) => {
-                                    if (e.target.checked) {
-                                        setInterests([...interests, interest]);
-                                    } else {
-                                        setInterests(interests.filter(i => i !== interest));
-                                    }
-                                }}
-                                className="mr-2"
-                            />
-                            <span>{interest}</span>
-                        </label>
+                <label className="block text-gray-700 mb-2">Interests</label>
+                <div className="flex flex-wrap gap-2 mb-2">
+                    {interests.map((inter, index) => (
+                        <div key={index} className="flex items-center bg-blue-100 rounded-full px-3 py-1">
+                            <button
+                                type="button"
+                                onClick={() => removeInterests(index)}
+                                className="mr-1 text-blue-600 hover:text-blue-800"
+                            >
+                                ×
+                            </button>
+                            <span className="text-sm">{inter}</span>
+                        </div>
                     ))}
+                </div>
+                <div className="flex">
+                    <input
+                        type="text"
+                        value={interestsInput}
+                        onChange={(e) => setInterestsInput(e.target.value)}
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Add interest"
+                    />
+                    <button
+                        onClick={addInterests}
+                        className="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600"
+                    >
+                        +
+                    </button>
                 </div>
             </div>
 
