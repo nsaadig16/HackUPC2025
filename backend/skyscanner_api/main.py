@@ -8,12 +8,13 @@ from fastapi import status
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Optional, List
+from routers import pexels
 
 
 app = FastAPI()
 
 # Load routers
-
+app.include_router(pexels.router, prefix="/pexels", tags=["Pexels"])
 class Travel(BaseModel):
       username: str
       destination: Optional[list[str]] = []
