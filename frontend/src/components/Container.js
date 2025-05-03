@@ -32,6 +32,7 @@ const Container = () => {
     const [textSlider, setTextSlider] = useState("")
     const [actualUsers, setActualUsers] = useState(0)
     const [totalUsers, setTotalUsers] = useState(0)
+    const [enableLoading, setEnableLoading] = useState(false)
 
     const [imageResults, setImageResults] = useState("")
 
@@ -152,7 +153,12 @@ const Container = () => {
                                     <>
                                         <div className="flex flex-col mt-48 items-center h-full w-full">
                                             <h1 className="text-4xl font-bold mb-2">Cargando resultados {actualUsers}/{totalUsers}</h1>
-                                            <button onClick={() => { getResults(); }} className="w-auto h-8 bg-blue-400 rounded-full px-2 hover:bg-blue-200" >Get answers</button>
+                                            {!enableLoading ? (<>
+                                                <button onClick={() => { getResults(); setEnableLoading(true) }} className={`w-auto h-8 bg-blue-400 rounded-full px-2 hover:bg-blue-200 `} >Get answers</button>
+                                            </>) :
+                                                <>
+
+                                                </>}
                                             <p className="text-sm mt-3 text-red-500">If you press button anyone could enter to the group</p>
 
                                         </div>
