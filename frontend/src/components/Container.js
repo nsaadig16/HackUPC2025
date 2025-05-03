@@ -8,8 +8,8 @@ const Container = () => {
     const [idea, setIdea] = useState(null)
     const [group, setGroup] = useState(0)
     // const [isVisible1, setIsVisible1] = useState(true)
-    const [isVisible2, setIsVisible2] = useState(true)
-    const [formVisible, setFormVisible] = useState(false)
+    const [isVisible2, setIsVisible2] = useState(false)
+    const [formVisible, setFormVisible] = useState(true)
     const [spaceActive, setSpaceActive] = useState(1)
     const [acceptedList, setAcceptedList] = useState([
         { name: "Museos", day: "Lunes", hour: "10:00" },
@@ -26,8 +26,6 @@ const Container = () => {
     useEffect(() => {
         setImageResults("https://images2.alphacoders.com/546/thumb-1920-546391.jpg")
     }, [])
-
-
 
     useEffect(() => {
         if (group === 0) return

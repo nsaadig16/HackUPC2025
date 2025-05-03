@@ -71,7 +71,7 @@ const Form = () => {
 
     return (
         <form onSubmit={handleSubmit} className="items-center align-middle mx-72 bg-white rounded-lg text-left">
-            <h2 className="text-2xl font-bold mb-6 ">Tell us your preferences</h2>
+            <h2 className="text-2xl font-bold mb-6 mt-7">Tell us your preferences</h2>
 
             {/* Origen */}
             <div className="mb-4">
