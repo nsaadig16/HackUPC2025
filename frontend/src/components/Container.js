@@ -8,7 +8,7 @@ const Container = () => {
     const [group, setGroup] = useState(0)
     // const [isVisible1, setIsVisible1] = useState(true)
     const [isVisible2, setIsVisible2] = useState(true)
-    const [formVisible, setFormVisible] = useState(true)
+    const [formVisible, setFormVisible] = useState(false)
 
     useEffect(() => {
         if (group === 0) return
@@ -30,13 +30,26 @@ const Container = () => {
             </div> */}
 
             <div className={`transition-opacity duration-500 ${isVisible2 ? "opacity-100" : "opacity-0 hidden"}`}>
-                <div className="flex flex-col justify-center items-center align-middle font-bold">
-                    <div className="flex-basis-4/5">
+                <div className="flex flex-row justify-center items-center align-middle font-bold">
+                    <div className="basis-9/12 w-full">
+                        <div className="flex flex-row items-start bg-red-300 w-full">
+                            <div className="w-28 h-12">
+                                <Button type={2} text="Resultats" onClick={() => { }} />
+                            </div>
 
+                            <div className="w-28 h-12">
+                                <Button type={2} text="Grup" onClick={() => { }} />
+                            </div>
+                        </div>
+                        <div className="container2">
+
+                            {/* AQUI JULIA */}
+
+                        </div>
                     </div>
 
-                    <div className="flex-basis-1/5">
-
+                    <div className="basis-3/12 w-full bg-blue-300">
+                        <p>ewew</p>
                     </div>
 
                 </div>
