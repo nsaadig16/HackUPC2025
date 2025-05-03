@@ -6,7 +6,7 @@ const Card = ({ Nom, Destins, Interessos }) => {
         <div className="bg-gray-200 rounded-md shadow-md p-4 m-2">
             <div className="flex flex-row gap-4">
 
-                <img src={userimg} className='w-8'></img>
+                <img alt='userImg' src={userimg} className='w-8'></img>
                 <h3 className="text-lx font-semibold">{Nom}</h3>
             </div>
             <p className="text-sm text-gray-600">Destins: {Destins}</p>
