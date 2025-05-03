@@ -2,6 +2,7 @@ import { React, use, useEffect, useState } from 'react'
 import Button from './Button'
 import Form from './Form'
 import GroupPanel from './GroupPanel';
+import { ThreeDot } from "react-loading-indicators";
 
 
 const Container = () => {
@@ -9,8 +10,8 @@ const Container = () => {
     const [idea, setIdea] = useState(null)
     const [group, setGroup] = useState(0)
     // const [isVisible1, setIsVisible1] = useState(true)
-    const [isVisible2, setIsVisible2] = useState(true)
-    const [formVisible, setFormVisible] = useState(false)
+    const [isVisible2, setIsVisible2] = useState(false)
+    const [formVisible, setFormVisible] = useState(true)
     const [spaceActive, setSpaceActive] = useState(1)
     const [acceptedList, setAcceptedList] = useState([
         { name: "Museos", day: "Lunes", hour: "10:00" },
@@ -32,6 +33,7 @@ const Container = () => {
     const [textSlider, setTextSlider] = useState("")
     const [actualUsers, setActualUsers] = useState(0)
     const [totalUsers, setTotalUsers] = useState(0)
+    const [enableLoading, setEnableLoading] = useState(false)
 
     const [imageResults, setImageResults] = useState("")
 
@@ -60,7 +62,7 @@ const Container = () => {
                                 <button onClick={() => { setSpaceActive(1); }}
                                     className={`ml-5 h-full w-24 text-xl ${spaceActive === 1 ? "text-blue-700 border-b-2 border-blue-700" : "text-black border-none hover:text-gray-700 hover:border-b-2 hover:border-gray-700"}`}
                                 >
-                                    Resultats
+                                    Results
                                 </button>
                             </div>
 
@@ -68,7 +70,7 @@ const Container = () => {
                                 <button onClick={() => { setSpaceActive(2); }}
                                     className={`h-full text-xl w-24 ${spaceActive === 1 ? "text-black border-none" : "text-blue-700"} border-blue-700 border-b-2 hover:text-gray-700 hover:border-b-2 hover:border-gray-700`}
                                 >
-                                    Grup
+                                    Group
                                 </button>
                             </div>
                         </div>
@@ -151,8 +153,13 @@ const Container = () => {
                                     </>) :
                                     <>
                                         <div className="flex flex-col mt-48 items-center h-full w-full">
-                                            <h1 className="text-4xl font-bold mb-2">Cargando resultados {actualUsers}/{totalUsers}</h1>
-                                            <button onClick={() => { getResults(); }} className="w-auto h-8 bg-blue-400 rounded-full px-2 hover:bg-blue-200" >Get answers</button>
+                                            <h1 className="text-4xl font-bold mb-2">Loading  results.. {actualUsers} users</h1>
+                                            {!enableLoading ? (<>
+                                                <button onClick={() => { getResults(); setEnableLoading(true) }} className={`w-auto h-8 bg-blue-400 rounded-full px-2 hover:bg-blue-200 `} >Get answers</button>
+                                            </>) :
+                                                <>
+                                                    <ThreeDot color="#63aff0" size="medium" text="" textColor="" />
+                                                </>}
                                             <p className="text-sm mt-3 text-red-500">If you press button anyone could enter to the group</p>
 
                                         </div>
