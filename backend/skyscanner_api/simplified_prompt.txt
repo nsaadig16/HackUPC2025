@@ -1,0 +1,227 @@
+I want you to **only** give me the output with the structure below, no explanations, no extra comments.
+
+Input: One or more JSON objects with the following fields:
+- username (string)
+- destination (string or null)
+- origin (string)
+- language (string)
+- cabin_class (string)
+- disponibility (tuple of two dates: start_date, end_date)
+- max_price (integer)
+- hire_car (boolean)
+- hotel (boolean)
+- preferences (list of strings)
+
+If the destination is null, choose the best destination according to the traveler’s preferences.
+
+Give me a list of 5 destinations with the best price, that:
+- Takes into account all preferences from all travelers in the group.
+- Selects the best available options (flights, hotels, hire cars) for each traveler.
+- Makes sure the arrival date and departure date are the same for everyone, since they travel together at the destination.
+
+Output format (strictly this JSON structure):
+{
+  "itineraries": [
+    {
+      "destination": "string",
+      "flights": [
+        {
+          "origin": "string",
+          "destination": "string",
+          "departure_date": "YYYY-MM-DD",
+          "arrival_date": "YYYY-MM-DD",
+          "price": integer,
+          "cabin_class": "string",
+          "airline": "string"
+        }
+      ],
+      "hotel": {
+        "name": "string",
+        "price": integer
+      },
+      "hire_car": {
+        "company": "string",
+        "price": integer
+      }
+    }
+  ]
+}
+
+Example Input:
+{
+  "inputs": [
+    {
+      "username": "Julliz",
+      "destination": null,
+      "origin": "spain",
+      "language": "catalan",
+      "cabin_class": "business",
+      "disponibility": ["2025-06-10", "2025-06-17"],
+      "max_price": 1000,
+      "hire_car": true,
+      "hotel": true,
+      "preferences": ["mountain", "nightlife", "culture and art"]
+    }
+  ]
+}
+
+Example Output:
+{
+  "itineraries": [
+    {
+      "destination": "Barcelona, Spain",
+      "flights": [
+        {
+          "origin": "spain",
+          "destination": "Barcelona, Spain",
+          "departure_date": "2025-06-12",
+          "arrival_date": "2025-06-12",
+          "price": 120,
+          "cabin_class": "business",
+          "airline": "Iberia"
+        },
+        {
+          "origin": "italy",
+          "destination": "Barcelona, Spain",
+          "departure_date": "2025-06-12",
+          "arrival_date": "2025-06-12",
+          "price": 80,
+          "cabin_class": "economy",
+          "airline": "Vueling"
+        }
+      ],
+      "hotel": {
+        "name": "Hotel Arts Barcelona",
+        "price": 560
+      },
+      "hire_car": {
+        "company": "Sixt",
+        "price": 150
+      }
+    },
+    {
+      "destination": "Ljubljana, Slovenia",
+      "flights": [
+        {
+          "origin": "spain",
+          "destination": "Ljubljana, Slovenia",
+          "departure_date": "2025-06-12",
+          "arrival_date": "2025-06-12",
+          "price": 180,
+          "cabin_class": "business",
+          "airline": "Lufthansa"
+        },
+        {
+          "origin": "italy",
+          "destination": "Ljubljana, Slovenia",
+          "departure_date": "2025-06-12",
+          "arrival_date": "2025-06-12",
+          "price": 90,
+          "cabin_class": "economy",
+          "airline": "ITA Airways"
+        }
+      ],
+      "hotel": {
+        "name": "InterContinental Ljubljana",
+        "price": 430
+      },
+      "hire_car": {
+        "company": "Avis",
+        "price": 140
+      }
+    },
+    {
+      "destination": "Nice, France",
+      "flights": [
+        {
+          "origin": "spain",
+          "destination": "Nice, France",
+          "departure_date": "2025-06-12",
+          "arrival_date": "2025-06-12",
+          "price": 140,
+          "cabin_class": "business",
+          "airline": "Air France"
+        },
+        {
+          "origin": "italy",
+          "destination": "Nice, France",
+          "departure_date": "2025-06-12",
+          "arrival_date": "2025-06-12",
+          "price": 75,
+          "cabin_class": "economy",
+          "airline": "ITA Airways"
+        }
+      ],
+      "hotel": {
+        "name": "Hotel Negresco",
+        "price": 500
+      },
+      "hire_car": {
+        "company": "Hertz",
+        "price": 160
+      }
+    },
+    {
+      "destination": "Split, Croatia",
+      "flights": [
+        {
+          "origin": "spain",
+          "destination": "Split, Croatia",
+          "departure_date": "2025-06-12",
+          "arrival_date": "2025-06-12",
+          "price": 200,
+          "cabin_class": "business",
+          "airline": "KLM"
+        },
+        {
+          "origin": "italy",
+          "destination": "Split, Croatia",
+          "departure_date": "2025-06-12",
+          "arrival_date": "2025-06-12",
+          "price": 95,
+          "cabin_class": "economy",
+          "airline": "Ryanair"
+        }
+      ],
+      "hotel": {
+        "name": "Radisson Blu Resort",
+        "price": 450
+      },
+      "hire_car": {
+        "company": "Enterprise",
+        "price": 130
+      }
+    },
+    {
+      "destination": "Lisbon, Portugal",
+      "flights": [
+        {
+          "origin": "spain",
+          "destination": "Lisbon, Portugal",
+          "departure_date": "2025-06-12",
+          "arrival_date": "2025-06-12",
+          "price": 110,
+          "cabin_class": "business",
+          "airline": "TAP Air Portugal"
+        },
+        {
+          "origin": "italy",
+          "destination": "Lisbon, Portugal",
+          "departure_date": "2025-06-12",
+          "arrival_date": "2025-06-12",
+          "price": 85,
+          "cabin_class": "economy",
+          "airline": "Ryanair"
+        }
+      ],
+      "hotel": {
+        "name": "Altis Grand Hotel",
+        "price": 400
+      },
+      "hire_car": {
+        "company": "Europcar",
+        "price": 120
+      }
+    }
+  ]
+}
