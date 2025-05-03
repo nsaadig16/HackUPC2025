@@ -3,6 +3,7 @@ import { useState } from 'react';
 const Form = () => {
     // Estados para los inputs
     const [origin, setOrigin] = useState('');
+    const [username, setUsername] = useState('');
     const [destinations, setDestinations] = useState([]);
     const [destinationInput, setDestinationInput] = useState('');
     const [interestsInput, setInterestsInput] = useState('');
@@ -61,6 +62,7 @@ const Form = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log({
+            username,
             origin,
             destinations,
             dates: { from: dateFrom, to: dateTo },
@@ -75,7 +77,19 @@ const Form = () => {
 
             {/* Origen */}
             <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Origen</label>
+                <label className="block text-gray-700 mb-2">Username</label>
+                <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                />
+            </div>
+
+            {/* Origen */}
+            <div className="mb-4">
+                <label className="block text-gray-700 mb-2">Origin</label>
                 <input
                     type="text"
                     value={origin}
@@ -87,7 +101,7 @@ const Form = () => {
 
             {/* Destinos */}
             <div className="mb-4">
-                <label className="block text-gray-700 mb-2">Destinos</label>
+                <label className="block text-gray-700 mb-2">Destination</label>
                 <div className="flex flex-wrap gap-2 mb-2">
                     {destinations.map((dest, index) => (
                         <div key={index} className="flex items-center bg-blue-100 rounded-full px-3 py-1">
@@ -108,7 +122,7 @@ const Form = () => {
                         value={destinationInput}
                         onChange={(e) => setDestinationInput(e.target.value)}
                         className="flex-1 px-3 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Añadir destino"
+                        placeholder="Add destinations"
                     />
                     <button
                         onClick={addDestination}
@@ -122,7 +136,7 @@ const Form = () => {
             {/* Fechas */}
             <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
-                    <label className="block text-gray-700 mb-2">Desde</label>
+                    <label className="block text-gray-700 mb-2">From</label>
                     <input
                         type="date"
                         value={dateFrom}
@@ -132,7 +146,7 @@ const Form = () => {
                     />
                 </div>
                 <div>
-                    <label className="block text-gray-700 mb-2">Hasta</label>
+                    <label className="block text-gray-700 mb-2">To</label>
                     <input
                         type="date"
                         value={dateTo}
