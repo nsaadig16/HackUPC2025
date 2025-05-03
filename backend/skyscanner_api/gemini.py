@@ -1,3 +1,4 @@
+import datetime
 import os
 import requests
 import json
@@ -5,9 +6,11 @@ from dotenv import load_dotenv
 from google import genai
 from api.flights_indicative import search_flights
 from typing import Dict, Any, Optional, List
+from main import Travel
 
 
-def call_gemini_api(api_key : str):
+
+def get_itinerary(api_key : str, travels: list[Travel]):
 
     """
     Call the Gemini API with the provided prompt.
@@ -17,8 +20,7 @@ def call_gemini_api(api_key : str):
     client = genai.Client(api_key=api_key)
 
     # Step 3: Build the prompt - using regular string instead of f-string to avoid format issues
-    prompt = """
-    I want you to **only** give me the output with the structure below, no explanations, no extra comments.
+    prompt = """I want you to **only** give me the output with the structure below, no explanations, no extra comments.
 
     Input: One or more JSON objects with the following fields:
     - username (string)
@@ -36,7 +38,7 @@ def call_gemini_api(api_key : str):
 
     Give me a list of 5 destinations with the best price, that:
     - Takes into account all preferences from all travelers in the group.
-    - Selects the best available options (flights, hotels, hire cars) for each traveler.
+    - Selects the best available options (flights, hotels, hire cars) for each traveler if they ask for.
     - Makes sure the arrival date and departure date are the same for everyone, since they travel together at the destination. Also add the IATA code of the origin and destination.
 
     Output format (strictly this JSON structure):
@@ -52,7 +54,6 @@ def call_gemini_api(api_key : str):
             "IATA_destination": "string",
             "departure_date": "YYYY-MM-DD",
             "arrival_date": "YYYY-MM-DD",
-            "price": integer,
             "cabin_class": "string",
             "airline": "string"
             }
@@ -100,7 +101,6 @@ def call_gemini_api(api_key : str):
             "IATA_destination": "BCN",
             "departure_date": "2025-06-12",
             "arrival_date": "2025-06-12",
-            "price": 150,
             "cabin_class": "business",
             "airline": "Air France"
             },
@@ -111,7 +111,6 @@ def call_gemini_api(api_key : str):
             "IATA_destination": "BCN",
             "departure_date": "2025-06-12",
             "arrival_date": "2025-06-12",
-            "price": 80,
             "cabin_class": "economy",
             "airline": "Vueling"
             }
@@ -135,7 +134,6 @@ def call_gemini_api(api_key : str):
             "IATA_destination": "LJU",
             "departure_date": "2025-06-12",
             "arrival_date": "2025-06-12",
-            "price": 180,
             "cabin_class": "business",
             "airline": "Lufthansa"
             },
@@ -146,14 +144,15 @@ def call_gemini_api(api_key : str):
             "IATA_destination": "LJU",
             "departure_date": "2025-06-12",
             "arrival_date": "2025-06-12",
-            "price": 90,
             "cabin_class": "economy",
             "airline": "ITA Airways"
             }
         ]
     ]
     }
-    """
+
+
+""" + f"Actual input: {travels}"
     
     # Step 4: Send to Gemini
     gemini_response = client.models.generate_content(
@@ -161,9 +160,44 @@ def call_gemini_api(api_key : str):
         contents=prompt,
     )
 
-    # Step 5: Print the result
-    print(gemini_response.text)
-    return gemini_response.text
+        # Step 5: Save response to file and return it
+    try:
+        # Clean the response text
+        response_text = gemini_response.text.strip()
+        if response_text.startswith("```json"):
+            response_text = response_text[7:]
+        elif response_text.startswith("```"):
+            response_text = response_text[3:]
+        if response_text.endswith("```"):
+            response_text = response_text[:-3]
+        
+        # Parse JSON to ensure it's valid
+        response_data = json.loads(response_text)
+        
+        # Save to file with timestamp
+        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"itinerary_{timestamp}.json"
+        filepath = os.path.join(os.path.dirname(__file__), "outputs", filename)
+        
+        # Create outputs directory if it doesn't exist
+        os.makedirs(os.path.join(os.path.dirname(__file__), "outputs"), exist_ok=True)
+        
+        # Save formatted JSON
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(response_data, f, indent=2, ensure_ascii=False)
+            
+        print(f"Saved itinerary to: {filepath}")
+        
+        return response_text
+        
+    except json.JSONDecodeError as e:
+        print(f"Error parsing Gemini response: {e}")
+        # Save raw response if JSON parsing fails
+        error_filepath = os.path.join(os.path.dirname(__file__), "outputs", f"error_{timestamp}.txt")
+        with open(error_filepath, 'w', encoding='utf-8') as f:
+            f.write(gemini_response.text)
+        print(f"Saved error response to: {error_filepath}")
+        return gemini_response.text
 
 def search_flights(api_key: str, origin : str, destination : str) -> Optional[Dict[str, Any]]:
 
@@ -340,8 +374,11 @@ if __name__ == "__main__":
     gemini_api_key = os.getenv("GEMINI_API_KEY")
     skyscanner_api_key = os.getenv("SKYSCANNER_API_KEY")
     
+
     # Example: Call Gemini and then search flights
-    gemini_result = call_gemini_api(gemini_api_key)
+    gemini_result = get_itinerary(gemini_api_key, Travel(username="Julliz",destination=[],origin="Perú",language=["spanish"], cabin_class="business",disponibility=["2025-06-10", "2025-06-17"], max_price=2500, hire_car=True, hotel=True, preferences=["beach", "underrated locations"])) 
+    print(f"Gemini response: {gemini_result}")
+    pass
     flight_results = process_gemini_and_search_flights(gemini_result, skyscanner_api_key)
     
     print(f"Found {len(flight_results)} flight results")

@@ -87,6 +87,13 @@ async def travel(username: str):
     if not found:
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
+travels=[]
+
+@app.post("/travel/{travel}")
+async def save_travel(travel: str): #! IMPORTANT: 
+        
+    travel_list.append(travel)
+    return travel
     
 def search_username(username: str):
     travelers = filter(lambda travel: travel.username == username, travel_list)
@@ -96,10 +103,11 @@ def search_username(username: str):
         return {"error": "No se ha encontrado el usuario"}
 
 slides = [
-    Slide(order=1, title="Bienvenida", image='https://example.com', content="Bienvenido a la API de viajes."),
-    Slide(order=2, title="Destinos", image='https://example.com',content="Explora nuestros destinos recomendados."),
-    Slide(order=3, title="Reservas", image='https://example.com',content="Realiza tu reserva en línea."),
+    Slide(order=1, title="Bienvenida", image_url='https://example.com', content="Bienvenido a la API de viajes."),
+    Slide(order=2, title="Destinos", image_url='https://example.com',content="Explora nuestros destinos recomendados."),
+    Slide(order=3, title="Reservas", image_url='https://example.com',content="Realiza tu reserva en línea."),
 ]
+
 
 @app.get("/slide/{order}", status_code=200)
 async def get_slide(order: int):
