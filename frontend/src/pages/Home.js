@@ -1,10 +1,16 @@
 import React from 'react'
+import Container from '../components/Container'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
 
-const home = () => {
+const Home = () => {
     return (
-        <div>
+        <div className=' w-full h-screen'>
+            <Header />
+            <Container />
+            <Footer />
         </div>
     )
 }
 
-export default home
+export default Home
