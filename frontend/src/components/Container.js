@@ -27,8 +27,6 @@ const Container = () => {
         setImageResults("https://images2.alphacoders.com/546/thumb-1920-546391.jpg")
     }, [])
 
-
-
     useEffect(() => {
         if (group === 0) return
         // setIsVisible2(false)
