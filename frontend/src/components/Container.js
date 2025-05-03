@@ -1,6 +1,7 @@
 import { React, use, useEffect, useState } from 'react'
 import Button from './Button'
 import Form from './Form'
+import GroupPanel from './GroupPanel'
 
 const Container = () => {
 
@@ -9,6 +10,13 @@ const Container = () => {
     // const [isVisible1, setIsVisible1] = useState(true)
     const [isVisible2, setIsVisible2] = useState(true)
     const [formVisible, setFormVisible] = useState(false)
+    const [usersInfoList, setUsersInfoList] = useState([
+        { Nom: "Marc Calvo", Destins: "Barcelona", Interessos: "Esports" },
+        { Nom: "Marc Calvo", Destins: "Barcelona", Interessos: "Esports" },
+        { Nom: "Marc Calvo", Destins: "Barcelona", Interessos: "Esports" },
+        { Nom: "Marc Calvo", Destins: "Barcelona", Interessos: "Esports" },
+        { Nom: "Marc Calvo", Destins: "Barcelona", Interessos: "Esports" },
+    ])
 
     useEffect(() => {
         if (group === 0) return
@@ -41,9 +49,8 @@ const Container = () => {
                                 <Button type={2} text="Grup" onClick={() => { }} />
                             </div>
                         </div>
-                        <div className="container2">
-
-                            {/* AQUI JULIA */}
+                        <div className="container2" >
+                        <GroupPanel grupos={usersInfoList}/>
 
                         </div>
                     </div>
