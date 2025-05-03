@@ -13,7 +13,7 @@ const Header = () => {
 
     return (
         <div>
-            <div className="flex justify-between items-center bg-gray-800 p-4 px-7 text-white">
+            <div className="flex justify-between items-center bg-gray-800 p-4 px-7 text-white h-48">
                 <div className='flex flex-row justify-between items-center w-full px-72'>
 
 
