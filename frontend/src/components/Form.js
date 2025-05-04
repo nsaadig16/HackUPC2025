@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { travel } from '../services/services';
 
 const Form = ({ onCompleteAction }) => {
     // Estados para los inputs
@@ -56,11 +57,23 @@ const Form = ({ onCompleteAction }) => {
             rentHotel,
             rentCar
         }
+        travel(struct)
+            .then((res) => {
+                console.log('Data fetched:', res);
+                // Aquí puedes hacer algo con los datos obtenidos
+                // Por ejemplo, puedes guardar los datos en el estado o en un contexto global
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+                // Manejar el error aquí
+            });
+        // Reiniciar el formulario
+
         onCompleteAction({ resull: 'success' });
     };
 
     return (
-        <form onSubmit={handleSubmit} className="items-center align-middle mx-72 bg-white rounded-lg text-left">
+        <form onSubmit={handleSubmit} className="items-center align-middle scroll-y-auto mx-72 bg-white rounded-lg text-left">
             <h2 className="text-2xl font-bold mb-6 mt-7">Tell us your preferences</h2>
 
             {/* Origen */}

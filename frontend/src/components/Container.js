@@ -8,8 +8,8 @@ import { ThreeDot } from "react-loading-indicators";
 const Container = () => {
 
     // const [isVisible1, setIsVisible1] = useState(true)
-    const [isVisible2, setIsVisible2] = useState(true)
-    const [formVisible, setFormVisible] = useState(false)
+    const [isVisible2, setIsVisible2] = useState(false)
+    const [formVisible, setFormVisible] = useState(true)
     const [spaceActive, setSpaceActive] = useState(1)
     const [acceptedList, setAcceptedList] = useState([
         { name: "Museos", day: "Lunes", hour: "10:00" },
