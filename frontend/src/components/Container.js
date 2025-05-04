@@ -76,7 +76,7 @@ const Container = () => {
                         </div>
 
 
-                        <div className="container2 text-left h-full flex flex-col bg-white rounded-lg overflow-hidden shadow-lg">
+                        <div className="container2 text-left h-full flex flex-col bg-white overflow-hidden shadow-lg">
                             {spaceActive === 1 ? (<>
                                 {titleSlider ? (
                                     <>
@@ -177,15 +177,15 @@ const Container = () => {
 
                     </div>
 
-                    <div className="basis-3/12 w-full flex flex-col h-full border-2">
-                        <div className="flex flex-col w-full h-12 border-b-2">
-                            <h2>Shedule Master </h2>
+                    <div className="mt-24 basis-3/12 w-full flex flex-col h-full">
+                        <div className="flex flex-col w-full h-12 border-b-2 border-gray-300">
+                            <h2><u><b>Shedule Master </b></u></h2>
                         </div>
 
                         <div className="flex flex-col border-l-2 border-gray-300 h-full w-full">
                             {
                                 acceptedList.map((item, index) => (
-                                    <div key={index} className="flex flex-row justify-between items-center border-b-2 border-gray-300 p-2 rounded-md">
+                                    <div key={index} className="flex flex-row justify-between items-center border-b-2 border-gray-300 p-2">
                                         <p>{item.day}-{item.hour}. {item.name}</p>
                                     </div>
                                 ))
