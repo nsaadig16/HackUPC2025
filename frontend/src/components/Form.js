@@ -47,15 +47,25 @@ const Form = ({ onCompleteAction }) => {
     // Manejar envío del formulario
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        const [anio1, mes1, dia1] = dateFrom.split("-");
+        const from = `${dia1}-${mes1}-${anio1}`;
+
+        const [anio, mes, dia] = dateTo.split("-");
+        const to = `${dia}-${mes}-${anio}`;
+
+        console.log(from, to);
         var struct = {
             username,
             origin,
             destinations,
-            dates: { dateFrom, dateTo },
-            pressupost,
+            disponibility: [from, to],
+            max_price: pressupost,
             interests,
-            rentHotel,
-            rentCar
+            hotel: rentHotel,
+            hire_car: rentCar,
+            lenguage: '',
+
         }
         travel(struct)
             .then((res) => {

@@ -1,47 +1,35 @@
-import { apiService } from './serviceapi';
+import { fetchPlus } from "../services/fetchModule";
+
+export async function travel(form) {
+    return fetchPlus({
+        Url: "/travel/",
+        Method: "POST",
+        hasUserauth: false,
+        Body: form,
+    });
+}
+
+
+export async function next() {
+    return fetchPlus({
+        Url: "/next_slide",
+        Method: "GET",
+        hasUserauth: false,
+    });
+}
+
+export async function numTravel() {
+    return fetchPlus({
+        Url: "/numtravels",
+        Method: "GET",
+        hasUserauth: false,
+    });
+}
 
 export async function finish() {
-
-    try {
-        const data = await apiService.post('/finish');
-        console.log('Data fetched:', data);
-        // Aquí puedes hacer algo con los datos obtenidos
-        return data;
-
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-
-
+    return fetchPlus({
+        Url: "/finish",
+        Method: "POST",
+        hasUserauth: false,
+    });
 }
-
-export async function travel(formData) {
-    try {
-        const data = await apiService.post('/travel', formData);
-        return data;
-
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-}
-
-export async function get_num_travels() {
-    try {
-        const data = await apiService.get('/get_num_travels');
-        return data;
-
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-}
-
-export async function get_travels() {
-    try {
-        const data = await apiService.get('/get_travels');
-        return data;
-
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-}
-
