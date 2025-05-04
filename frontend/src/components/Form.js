@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { travel } from '../services/services';
 
 const Form = ({ onCompleteAction }) => {
     // Estados para los inputs
@@ -46,21 +47,43 @@ const Form = ({ onCompleteAction }) => {
     // Manejar envío del formulario
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        const [anio1, mes1, dia1] = dateFrom.split("-");
+        const from = `${dia1}-${mes1}-${anio1}`;
+
+        const [anio, mes, dia] = dateTo.split("-");
+        const to = `${dia}-${mes}-${anio}`;
+
+        console.log(from, to);
         var struct = {
             username,
             origin,
             destinations,
-            dates: { dateFrom, dateTo },
-            pressupost,
+            disponibility: [from, to],
+            max_price: pressupost,
             interests,
-            rentHotel,
-            rentCar
+            hotel: rentHotel,
+            hire_car: rentCar,
+            lenguage: '',
+
         }
+        travel(struct)
+            .then((res) => {
+                console.log('Data fetched:', res);
+                // Aquí puedes hacer algo con los datos obtenidos
+                // Por ejemplo, puedes guardar los datos en el estado o en un contexto global
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+                // Manejar el error aquí
+            });
+        // Reiniciar el formulario
+
         onCompleteAction({ resull: 'success' });
     };
 
     return (
-        <form onSubmit={handleSubmit} className="items-center align-middle mx-72 bg-white rounded-lg text-left">
+        <form onSubmit={handleSubmit} className="items-center align-middle scroll-y-auto mx-72 bg-white rounded-lg text-left">
             <h2 className="text-2xl font-bold mb-6 mt-7">Tell us your preferences</h2>
 
             {/* Origen */}

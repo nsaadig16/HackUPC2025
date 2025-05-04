@@ -3,13 +3,14 @@ import Button from './Button'
 import Form from './Form'
 import GroupPanel from './GroupPanel';
 import { ThreeDot } from "react-loading-indicators";
+import { finish, next, numTravel } from '../services/services';
 
 
 const Container = () => {
 
     // const [isVisible1, setIsVisible1] = useState(true)
-    const [isVisible2, setIsVisible2] = useState(true)
-    const [formVisible, setFormVisible] = useState(false)
+    const [isVisible2, setIsVisible2] = useState(false)
+    const [formVisible, setFormVisible] = useState(true)
     const [spaceActive, setSpaceActive] = useState(1)
     const [acceptedList, setAcceptedList] = useState([
         { name: "Museos", day: "Lunes", hour: "10:00" },
@@ -39,6 +40,33 @@ const Container = () => {
         setIsVisible2(true)
     }
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const b = await numTravel()
+            console.log(b);
+            if (b.num_travels > 1) {
+
+
+                next()
+                    .then((res) => {
+                        console.log(res);
+                        if (enableLoading === true) {
+                            setEnableLoading(false)
+                        }
+
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+            }
+        };
+
+        fetchData();
+        const interval = setInterval(fetchData, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     function updateVoteSlide(value) {
         setVoteSlide(value)
     }
@@ -48,7 +76,7 @@ const Container = () => {
     }, [])
 
     function getResults() {
-        //Aquesta funció enviara al backend que ja estan tots els usuaris i que generi resultats.
+        finish();
     }
 
     return (

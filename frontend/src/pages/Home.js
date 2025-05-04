@@ -5,7 +5,7 @@ import Footer from '../components/Footer'
 
 const Home = () => {
     return (
-        <div className=' w-full h-screen max-h-screen overflow-hidden'>
+        <div className=' w-full h-screen max-h-screen overflow-y-auto'>
             <Header />
             <Container />
             <Footer />
