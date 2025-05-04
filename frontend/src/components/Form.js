@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Form = () => {
+const Form = ({ onCompleteAction }) => {
     // Estados para los inputs
     const [origin, setOrigin] = useState('');
     const [username, setUsername] = useState('');
@@ -10,11 +10,10 @@ const Form = () => {
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
     const [interests, setInterests] = useState([]);
-    const [groupMembers, setGroupMembers] = useState([]);
-    const [memberInput, setMemberInput] = useState('');
+    const [rentHotel, setRentHotel] = useState(false);
+    const [rentCar, setRentCar] = useState(false);
+    const [pressupost, setPressupost] = useState('');
 
-    // Opciones de intereses
-    const interestOptions = ['Museos', 'Baile', 'Fútbol', 'Playas', 'Montaña', 'Gastronomía', 'Arte', 'Música'];
 
     // Añadir destino
     const addDestination = (e) => {
@@ -44,31 +43,20 @@ const Form = () => {
         setInterests(interests.filter((_, i) => i !== index));
     };
 
-    // Añadir miembro
-    const addMember = (e) => {
-        e.preventDefault();
-        if (memberInput.trim() && !groupMembers.includes(memberInput)) {
-            setGroupMembers([...groupMembers, memberInput]);
-            setMemberInput('');
-        }
-    };
-
-    // Eliminar miembro
-    const removeMember = (index) => {
-        setGroupMembers(groupMembers.filter((_, i) => i !== index));
-    };
-
     // Manejar envío del formulario
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log({
+        var struct = {
             username,
             origin,
             destinations,
-            dates: { from: dateFrom, to: dateTo },
+            dates: { dateFrom, dateTo },
+            pressupost,
             interests,
-            groupMembers
-        });
+            rentHotel,
+            rentCar
+        }
+        onCompleteAction({ resull: 'success' });
     };
 
     return (
@@ -140,7 +128,7 @@ const Form = () => {
                     <input
                         type="date"
                         value={dateFrom}
-                        onChange={(e) => setDateFrom(e.target.value)}
+                        onChange={(e) => setDateFrom(String(e.target.value))}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
                     />
@@ -150,13 +138,22 @@ const Form = () => {
                     <input
                         type="date"
                         value={dateTo}
-                        onChange={(e) => setDateTo(e.target.value)}
+                        onChange={(e) => setDateTo(String(e.target.value))}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
                     />
                 </div>
             </div>
-
+            <div className="mb-4">
+                <label className="block text-gray-700 mb-2">Pressupost</label>
+                <input
+                    type="text"
+                    value={pressupost}
+                    onChange={(e) => setPressupost(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                />
+            </div>
             {/* Intereses */}
             <div className="mb-4">
                 <label className="block text-gray-700 mb-2">Interests</label>
@@ -188,6 +185,22 @@ const Form = () => {
                     >
                         +
                     </button>
+                </div>
+
+                <div className="space-y-2 mt-3">
+                    <label className="flex items-center gap-2">
+                        <input type="checkbox"
+                            onChange={(e) => setRentHotel(e.target.checked)}
+                            className="h-4 w-4"
+                        />
+                        Book a hotel room
+                    </label>
+                    <label className="flex items-center gap-2">
+                        <input type="checkbox"
+                            onChange={(e) => setRentCar(e.target.checked)}
+                            className="h-4 w-4" />
+                        Rent a car
+                    </label>
                 </div>
             </div>
 

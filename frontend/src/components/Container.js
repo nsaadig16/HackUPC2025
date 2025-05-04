@@ -7,8 +7,6 @@ import { ThreeDot } from "react-loading-indicators";
 
 const Container = () => {
 
-    const [idea, setIdea] = useState(null)
-    const [group, setGroup] = useState(0)
     // const [isVisible1, setIsVisible1] = useState(true)
     const [isVisible2, setIsVisible2] = useState(true)
     const [formVisible, setFormVisible] = useState(false)
@@ -32,20 +30,22 @@ const Container = () => {
     const [titleSlider, setTitleSlider] = useState("")
     const [textSlider, setTextSlider] = useState("")
     const [actualUsers, setActualUsers] = useState(0)
-    const [totalUsers, setTotalUsers] = useState(0)
     const [enableLoading, setEnableLoading] = useState(false)
-
+    const [voteSlide, setVoteSlide] = useState(0)
     const [imageResults, setImageResults] = useState("")
+
+    function handleCompletedForm() {
+        setFormVisible(false)
+        setIsVisible2(true)
+    }
+
+    function updateVoteSlide(value) {
+        setVoteSlide(value)
+    }
 
     useEffect(() => {
         setImageResults("https://images2.alphacoders.com/546/thumb-1920-546391.jpg")
     }, [])
-
-    useEffect(() => {
-        if (group === 0) return
-        // setIsVisible2(false)
-        setFormVisible(true)
-    }, [group])
 
     function getResults() {
         //Aquesta funció enviara al backend que ja estan tots els usuaris i que generi resultats.
@@ -106,6 +106,20 @@ const Container = () => {
                                                     <h1 className="text-4xl font-bold mb-2">{titleSlider}</h1>
                                                     <p className="text-xl">{textSlider}</p>
                                                 </div>
+                                                <div className="flex items-center ml-28  space-x-6 w-full mt-auto">
+                                                    <button onClick={() => updateVoteSlide(1)} className="bg-green-50 hover:bg-green-100 text-green-600 font-bold py-3 px-8 rounded-full flex items-center transition-colors border border-green-100">
+                                                        <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                                        </svg>
+                                                        Aceptar
+                                                    </button>
+                                                    <button onClick={() => updateVoteSlide(0)} className="bg-red-50 hover:bg-red-100 text-red-600 font-bold py-3 px-8 rounded-full flex items-center transition-colors border border-red-100">
+                                                        <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                        Rechazar
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -134,21 +148,7 @@ const Container = () => {
                                             </div>
 
                                             {/* Botones en el centro inferior - Versión con iconos más claros */}
-                                            <div className="flex justify-center items-center space-x-6 w-full mt-auto">
-                                                <button className="bg-green-50 hover:bg-green-100 text-green-600 font-bold py-3 px-8 rounded-full flex items-center transition-colors border border-green-100">
-                                                    <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                                    </svg>
-                                                    Aceptar
-                                                </button>
 
-                                                <button className="bg-red-50 hover:bg-red-100 text-red-600 font-bold py-3 px-8 rounded-full flex items-center transition-colors border border-red-100">
-                                                    <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                                    </svg>
-                                                    Rechazar
-                                                </button>
-                                            </div>
                                         </div>
                                     </>) :
                                     <>
@@ -182,7 +182,7 @@ const Container = () => {
                             <h2>Shedule Master </h2>
                         </div>
 
-                        <div className="flex flex-col border-l-2 border-gray-300 h-full w-full">
+                        <div className="flex flex-col border-l-2 border-gray-300 h-full w-full scroll-y-auto">
                             {
                                 acceptedList.map((item, index) => (
                                     <div key={index} className="flex flex-row justify-between items-center border-b-2 border-gray-300 p-2 rounded-md">
@@ -197,7 +197,7 @@ const Container = () => {
             </div>
 
             <div className={`transition-opacity duration-500 ${formVisible ? "opacity-100" : "opacity-0 hidden"}`}>
-                <Form Type={group} />
+                <Form onCompleteAction={handleCompletedForm} />
             </div>
 
         </div >
