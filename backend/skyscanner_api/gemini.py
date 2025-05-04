@@ -10,24 +10,30 @@ from main import Travel
 
 
 
-def get_itinerary(api_key : str, travels: list[Travel]):
+def get_itinerary(api_key : str, travels: list[Travel],rejected: Optional[list[str]]=None) -> str:
 
     """
     Call the Gemini API with the provided prompt.
     """
     # Load Gemini API key
     load_dotenv()
+    api_key = os.getenv("GEMINI_API_KEY")
     client = genai.Client(api_key=api_key)
+    
+    rej_string = "Rejected option/s, do not choose it as a destination: "
+    if rejected:
+        for r in rejected:
+            rej_string += f"{r}, "
 
     # Step 3: Build the prompt - using regular string instead of f-string to avoid format issues
-    prompt = """I want you to **only** give me the output with the structure below, no explanations, no extra comments.
+    prompt = """
+    I want you to **only** give me the output with the structure below, no explanations, no extra comments.
 
     Input: One or more JSON objects with the following fields:
     - username (string)
     - destination (string or null)
     - origin (string)
     - language (string)
-    - cabin_class (string)
     - disponibility (tuple of two dates: start_date, end_date)
     - max_price (integer)
     - hire_car (boolean)
@@ -36,7 +42,7 @@ def get_itinerary(api_key : str, travels: list[Travel]):
 
     If the destination is null, choose the best destination according to the traveler's preferences.
 
-    Give me a list of 5 destinations with the best price, that:
+    Give me only one destination with the best price, that:
     - Takes into account all preferences from all travelers in the group.
     - Selects the best available options (flights, hotels, hire cars) for each traveler if they ask for.
     - Makes sure the arrival date and departure date are the same for everyone, since they travel together at the destination. Also add the IATA code of the origin and destination.
@@ -78,7 +84,6 @@ def get_itinerary(api_key : str, travels: list[Travel]):
         "destination": null,
         "origin": "spain",
         "language": "catalan",
-        "cabin_class": "business",
         "disponibility": ["2025-06-10", "2025-06-17"],
         "max_price": 1000,
         "hire_car": true,
@@ -150,15 +155,13 @@ def get_itinerary(api_key : str, travels: list[Travel]):
         ]
     ]
     }
-
-
-""" + f"Actual input: {travels}"
-    
+    """ + f"Actual input: {travels}" + (rej_string if rejected else "")
     # Step 4: Send to Gemini
     gemini_response = client.models.generate_content(
         model='gemini-2.0-flash',
         contents=prompt,
     )
+
 
         # Step 5: Save response to file and return it
     try:
@@ -175,8 +178,8 @@ def get_itinerary(api_key : str, travels: list[Travel]):
         response_data = json.loads(response_text)
         
         # Save to file with timestamp
-        timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"itinerary_{timestamp}.json"
+        
+        filename = f"outputItinerary.json"
         filepath = os.path.join(os.path.dirname(__file__), "outputs", filename)
         
         # Create outputs directory if it doesn't exist
@@ -193,7 +196,7 @@ def get_itinerary(api_key : str, travels: list[Travel]):
     except json.JSONDecodeError as e:
         print(f"Error parsing Gemini response: {e}")
         # Save raw response if JSON parsing fails
-        error_filepath = os.path.join(os.path.dirname(__file__), "outputs", f"error_{timestamp}.txt")
+        error_filepath = os.path.join(os.path.dirname(__file__), "outputs", f"error_itinerart.txt")
         with open(error_filepath, 'w', encoding='utf-8') as f:
             f.write(gemini_response.text)
         print(f"Saved error response to: {error_filepath}")
@@ -376,7 +379,7 @@ if __name__ == "__main__":
     
 
     # Example: Call Gemini and then search flights
-    gemini_result = get_itinerary(gemini_api_key, Travel(username="Julliz",destination=[],origin="Perú",language=["spanish"], cabin_class="business",disponibility=["2025-06-10", "2025-06-17"], max_price=2500, hire_car=True, hotel=True, preferences=["beach", "underrated locations"])) 
+    gemini_result = get_itinerary(gemini_api_key, Travel(username="Julliz",destination=[],origin="Perú",language=["spanish"], disponibility=["2025-06-10", "2025-06-17"], max_price=2500, hire_car=True, hotel=True, preferences=["beach", "underrated locations"])) 
     print(f"Gemini response: {gemini_result}")
     pass
     flight_results = process_gemini_and_search_flights(gemini_result, skyscanner_api_key)

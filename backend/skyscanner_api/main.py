@@ -20,7 +20,6 @@ class Travel(BaseModel):
       destination: Optional[list[str]] = []
       origin: str
       language: list[str]
-      cabin_class: str
       disponibility: list[str]
       max_price: int
       hire_car: bool
@@ -33,9 +32,9 @@ class Slide(BaseModel):
       image_url: str
       content: str
 
-travel_list = [Travel(username="Julliz",destination=[],origin="Perú",language=["spanish"], cabin_class="business",disponibility=["2025-06-10", "2025-06-17"], max_price=2500, hire_car=True, hotel=True, preferences=["beach", "underrated locations"]),
-              Travel(username="Oggy",destination=[],origin="Nigeria",language=["Arabe"], cabin_class="business",disponibility=["2025-06-10", "2025-07-1"], max_price=10000, hire_car=False, hotel=True, preferences=["mountain", "nightlife", "culture and art"]),
-              Travel(username="Lolo",destination=[],origin="Londres",language=["english"], cabin_class="business",disponibility=["2025-04-10", "2025-07-20"], max_price=1500, hire_car=False, hotel=False, preferences=["old cities", "culture and art"]),]
+travel_list = [Travel(username="Julliz",destination=[],origin="Perú",language=["spanish"],disponibility=["2025-06-10", "2025-06-17"], max_price=2500, hire_car=True, hotel=True, preferences=["beach", "underrated locations"]),
+              Travel(username="Oggy",destination=[],origin="Nigeria",language=["Arabe"],disponibility=["2025-06-10", "2025-07-1"], max_price=10000, hire_car=False, hotel=True, preferences=["mountain", "nightlife", "culture and art"]),
+              Travel(username="Lolo",destination=[],origin="Londres",language=["english"],disponibility=["2025-04-10", "2025-07-20"], max_price=1500, hire_car=False, hotel=False, preferences=["old cities", "culture and art"]),]
 
 
 @app.get("/")
