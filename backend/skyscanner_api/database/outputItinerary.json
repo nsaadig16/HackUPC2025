@@ -1,0 +1,27 @@
+{
+  "itineraries": [
+    {
+      "destination": "Fernando de Noronha, Brazil",
+      "flights": [
+        {
+          "origin": "Peru",
+          "destination": "Fernando de Noronha, Brazil",
+          "IATA_origin": "LIM",
+          "IATA_destination": "FEN",
+          "departure_date": "2025-06-10",
+          "arrival_date": "2025-06-10",
+          "cabin_class": "economy",
+          "airline": "LATAM"
+        }
+      ],
+      "hotel": {
+        "name": "Pousada Maravilha",
+        "price": 1200
+      },
+      "hire_car": {
+        "company": "Localiza",
+        "price": 300
+      }
+    }
+  ]
+}
