@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from google import genai
 from api.flights_indicative import search_flights
 from typing import Dict, Any, Optional, List
-from main import Travel
+from Travel import Travel
 
 
 
@@ -195,14 +195,21 @@ def get_itinerary(api_key : str, travels: list[Travel],rejected: Optional[list[s
         
     except json.JSONDecodeError as e:
         print(f"Error parsing Gemini response: {e}")
-        # Save raw response if JSON parsing fails
-        error_filepath = os.path.join(os.path.dirname(__file__), "outputs", f"error_itinerart.txt")
-        with open(error_filepath, 'w', encoding='utf-8') as f:
-            f.write(gemini_response.text)
-        print(f"Saved error response to: {error_filepath}")
-        return gemini_response.text
+        
+    cleaned_response = gemini_response.text.strip()
+    if cleaned_response.startswith("```json"):
+        cleaned_response = cleaned_response[7:]
+    elif cleaned_response.startswith("```"):
+        cleaned_response = cleaned_response[3:]
+    
+    if cleaned_response.endswith("```"):
+        cleaned_response = cleaned_response[:-3]
+    
+    cleaned_response = cleaned_response.strip()
 
-def search_flights(api_key: str, origin : str, destination : str) -> Optional[Dict[str, Any]]:
+    return cleaned_response
+
+def search_flights(origin : str, destination : str) -> Optional[Dict[str, Any]]:
 
     """
     Search for indicative flight prices using Skyscanner API.
@@ -213,12 +220,14 @@ def search_flights(api_key: str, origin : str, destination : str) -> Optional[Di
     Returns:
         Optional[Dict[str, Any]]: The JSON response from the API or None if the request fails
     """
+    skyscanner_api_key = os.getenv("SKYSCANNER_API_KEY")
+
     # API endpoint
     url: str = "https://partners.api.skyscanner.net/apiservices/v3/flights/indicative/search"
 
     # Headers
     headers: Dict[str, str] = {
-        "x-api-key": api_key,
+        "x-api-key": skyscanner_api_key,
         "Content-Type": "application/json"
     }
 
