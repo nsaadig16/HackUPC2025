@@ -10,8 +10,8 @@ const Container = () => {
     const [idea, setIdea] = useState(null)
     const [group, setGroup] = useState(0)
     // const [isVisible1, setIsVisible1] = useState(true)
-    const [isVisible2, setIsVisible2] = useState(false)
-    const [formVisible, setFormVisible] = useState(true)
+    const [isVisible2, setIsVisible2] = useState(true)
+    const [formVisible, setFormVisible] = useState(false)
     const [spaceActive, setSpaceActive] = useState(1)
     const [acceptedList, setAcceptedList] = useState([
         { name: "Museos", day: "Lunes", hour: "10:00" },
@@ -29,7 +29,7 @@ const Container = () => {
         { Nom: 'Ana Ruiz', Destins: 'Tarragona', Interessos: 'Romà' },
         { Nom: 'Javier Gómez', Destins: 'Lleida', Interessos: 'Muntanya' },
     ]);
-    const [titleSlider, setTitleSlider] = useState("")
+    const [titleSlider, setTitleSlider] = useState("hola")
     const [textSlider, setTextSlider] = useState("")
     const [actualUsers, setActualUsers] = useState(0)
     const [totalUsers, setTotalUsers] = useState(0)
