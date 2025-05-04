@@ -15,17 +15,38 @@ from gemini import get_itinerary
 from routers import pexels
 from sqliteconnect import SQLiteConnector as SQLiteConnect
 from Travel import Travel
+from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 # Load routers
 app.include_router(pexels.router, prefix="/pexels", tags=["Pexels"])
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite todos los orígenes
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos los métodos (GET, POST, PUT, etc.)
+    allow_headers=["*"],  # Permite todos los headers
+)
+
+class Travel(BaseModel):
+      username: str
+      destination: Optional[list[str]] = []
+      origin: str
+      language: Optional[list[str]] = []
+      disponibility: list[str]
+      max_price: int
+      hire_car: bool
+      hotel: bool
+      preferences: Optional[list[str]] = []
 
 class Slide(BaseModel):
       order: int
       title: str
       image_url: str
       content: str
+
+travel_list = []
 
 @app.get("/")
 def read_root():
@@ -90,21 +111,26 @@ async def get_slides():
     return SQLiteConnect.get_all("slides")
 
 
+global order
 order = 1
 @app.get("/next_slide", status_code=200)
 async def get_next_slide():
+    global order  # Declare 'order' as global to modify it
     if order == 1:
         slides = SQLiteConnect.get_by_order("slides", order)
+        print(slides)
         return json.loads(slides.content)
     else:
         slides = SQLiteConnect.get_by_order("slides", order)
-        voutes = slides.votes_up + slides.votes_down
-        if voutes == len(SQLiteConnect.get_all("travel")):
+        if not slides.content:
+            raise HTTPException(status_code=404, detail="Slide content not found")
+        votes = slides.votes_up + slides.votes_down
+        if votes == len(SQLiteConnect.get_all("travel")):
             if slides.votes_up > slides.votes_down:
                 slides = edit_downvote_slide(slides.content, order)
-                slides=SQLiteConnect.replace("slides", order, slides)
+                slides = SQLiteConnect.replace("slides", order, slides)
             else:
-                order += 1
+                order += 1  # Increment 'order' correctly
                 slides = SQLiteConnect.get_by_order("slides", order)
             return json.loads(slides.content)
         return json.loads(slides.content)
