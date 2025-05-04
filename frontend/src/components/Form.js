@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const Form = () => {
+const Form = ({ onCompleteAction }) => {
     // Estados para los inputs
     const [origin, setOrigin] = useState('');
     const [username, setUsername] = useState('');
@@ -56,6 +56,7 @@ const Form = () => {
             rentHotel,
             rentCar
         }
+        onCompleteAction({ resull: 'success' });
     };
 
     return (

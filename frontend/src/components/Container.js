@@ -7,7 +7,6 @@ import { ThreeDot } from "react-loading-indicators";
 
 const Container = () => {
 
-    const [group, setGroup] = useState(0)
     // const [isVisible1, setIsVisible1] = useState(true)
     const [isVisible2, setIsVisible2] = useState(true)
     const [formVisible, setFormVisible] = useState(false)
@@ -28,27 +27,25 @@ const Container = () => {
         { Nom: 'Ana Ruiz', Destins: 'Tarragona', Interessos: 'Romà' },
         { Nom: 'Javier Gómez', Destins: 'Lleida', Interessos: 'Muntanya' },
     ]);
-    const [titleSlider, setTitleSlider] = useState("wefw")
+    const [titleSlider, setTitleSlider] = useState("")
     const [textSlider, setTextSlider] = useState("")
     const [actualUsers, setActualUsers] = useState(0)
     const [enableLoading, setEnableLoading] = useState(false)
     const [voteSlide, setVoteSlide] = useState(0)
     const [imageResults, setImageResults] = useState("")
 
+    function handleCompletedForm() {
+        setFormVisible(false)
+        setIsVisible2(true)
+    }
+
     function updateVoteSlide(value) {
         setVoteSlide(value)
-
     }
 
     useEffect(() => {
         setImageResults("https://images2.alphacoders.com/546/thumb-1920-546391.jpg")
     }, [])
-
-    useEffect(() => {
-        if (group === 0) return
-        // setIsVisible2(false)
-        setFormVisible(true)
-    }, [group])
 
     function getResults() {
         //Aquesta funció enviara al backend que ja estan tots els usuaris i que generi resultats.
@@ -185,7 +182,7 @@ const Container = () => {
                             <h2>Shedule Master </h2>
                         </div>
 
-                        <div className="flex flex-col border-l-2 border-gray-300 h-full w-full">
+                        <div className="flex flex-col border-l-2 border-gray-300 h-full w-full scroll-y-auto">
                             {
                                 acceptedList.map((item, index) => (
                                     <div key={index} className="flex flex-row justify-between items-center border-b-2 border-gray-300 p-2 rounded-md">
@@ -200,7 +197,7 @@ const Container = () => {
             </div>
 
             <div className={`transition-opacity duration-500 ${formVisible ? "opacity-100" : "opacity-0 hidden"}`}>
-                <Form Type={group} />
+                <Form onCompleteAction={handleCompletedForm} />
             </div>
 
         </div >
